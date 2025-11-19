@@ -16,7 +16,6 @@ markdown_path = "../../data/C1/markdown/easy-rl-chapter1.md"
 # 加载本地markdown文件
 loader = UnstructuredMarkdownLoader(markdown_path)
 docs = loader.load()
-
 # 文本分块
 text_splitter = RecursiveCharacterTextSplitter()
 chunks = text_splitter.split_documents(docs)
@@ -57,8 +56,8 @@ llm = ChatDeepSeek(
 question = "文中举了哪些例子？"
 
 # 在向量存储中查询相关文档
-retrieved_docs = vectorstore.similarity_search(question, k=3)
+retrieved_docs = vectorstore.similarity_search(question, k=6) #我发现在实操中k=3会出现无法根据上下文判断出信息的情况，k=6则是能够和文章示例一样
 docs_content = "\n\n".join(doc.page_content for doc in retrieved_docs)
-
 answer = llm.invoke(prompt.format(question=question, context=docs_content))
-print(answer)
+# 练习1中的要求，即过滤掉除了回复的content之外的内容，由于返回的是一个aimessage的对象，这个对象涵盖有多个属性，包括回答内容和token数量等，在这里只需要对象中的content属性
+print(answer.content)
