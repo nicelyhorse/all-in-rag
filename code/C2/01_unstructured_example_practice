@@ -1,0 +1,35 @@
+from collections import Counter
+from unstructured.partition.pdf import partition_pdf
+
+pdf_path = "../../data/C2/pdf/rag.pdf"
+
+def run_with_strategy(strategy: str):
+    print(f"\n===== 使用 strategy = '{strategy}' 进行解析 =====")
+
+    # 使用 partition_pdf 解析 PDF，指定不同的 strategy
+    elements = partition_pdf(
+        filename=pdf_path,
+        strategy=strategy,  
+    )
+
+    # 打印基本统计信息
+    print(f"解析完成: {len(elements)} 个元素, 共 {sum(len(str(e)) for e in elements)} 个字符")
+
+    # 统计元素类型
+    types = Counter(e.category for e in elements)
+    print(f"元素类型统计: {dict(types)}")
+
+    # 示例：只展示前 5 个元素，避免输出太长
+    print("\n前 5 个元素：")
+    for i, element in enumerate(elements[:5], 1):
+        print(f"Element {i} ({element.category}):")
+        print(element)
+        print("-" * 60)
+
+    return elements
+
+
+if __name__ == "__main__":
+    # 分别用 hi_res 和 ocr_only 两种策略解析
+    elements_hi_res = run_with_strategy("hi_res")
+    elements_ocr_only = run_with_strategy("ocr_only")
