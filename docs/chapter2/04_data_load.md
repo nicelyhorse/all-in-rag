@@ -127,3 +127,71 @@ for i, element in enumerate(elements, 1):
 ## 练习
 
 - 使用`partition_pdf`替换当前`partition`函数并分别尝试用`hi_res`和`ocr_only`进行解析，观察输出结果有何变化。
+- 首次的输出（输出的部分节选）：
+  Element 80 (Title):
+播报
+============================================================
+Element 81 (Title):
+权威合作编辑
+============================================================
+Element 82 (Title):
+检索增强生成（Retrieval-Augmented Generation，RAG）是一种结合检索和生成技术的模型。它通过引用外部知识库的信
+============================================================
+Element 83 (Title):
+中国科学院大学计算机科
+============================================================
+Element 84 (UncategorizedText):
+息来生成答案或内容，具有较强的可解释性和定制能力，适用于问答系统、文档生成、智能助手等多个自然语言处理任务中。 RAG模型的优势在于通用性强、可实现即时的知识更新，以及通过端到端评估方法提供更高效和精准的信息服务 [1]。
+- 替换之后的输出（节选）：
+- hi-res:
+解析完成: 224 个元素, 共 8277 个字符
+元素类型统计: {'Image': 21, 'UncategorizedText': 89, 'Header': 4, 'NarrativeText': 68, 'Table': 4, 'FigureCaption': 4, 'Title': 30, 'ListItem': 4}
+
+前 5 个元素：
+Element 1 (Image):
+
+------------------------------------------------------------
+Element 2 (UncategorizedText):
+Bh fe Se «8 Be BR 8H
+------------------------------------------------------------
+Element 3 (UncategorizedText):
+地图
+------------------------------------------------------------
+Element 4 (UncategorizedText):
+Oke 6B CR OBS
+------------------------------------------------------------
+Element 5 (Header):
+百度首页 登录 注册
+- ocr_only:
+解析完成: 138 个元素, 共 8266 个字符
+元素类型统计: {'UncategorizedText': 50, 'Title': 61, 'NarrativeText': 26, 'ListItem': 1}
+
+前 5 个元素：
+Element 1 (UncategorizedText):
+Bh fe Se «8 Be BR 8H 4 Oke 6B CR OBS HES SR ith
+------------------------------------------------------------
+Element 2 (Title):
+Cy) Bai@ Bil | eee x SABER | my
+------------------------------------------------------------
+Element 3 (NarrativeText):
+WBARAATERBEBANEAAR, VRE DBI HAER RE, CEL IEROR: REAR RRMA, NECA CRIRS, LM SER! iFIB>> Bn pias HEAR AAS a MAB BAAR RATE > 1 REA i oa E Ay ) Ha Otte Lewes
+------------------------------------------------------------
+Element 4 (UncategorizedText):
+ARB WARAZ—
+------------------------------------------------------------
+Element 5 (Title):
+MoingSh
+------------------------------------------------------------
+ ### 结论
+在本练习中，我将partition_pdf的strategy参数分别设置为"hi_res"和"ocr_only"对同一份rag.pdf进行解析
+1）元素数量与结构丰富度对比
+使用hi_res时，共解析出224个元素（8277个字符），元素类型较为丰富，包括Image、Header、NarrativeText、Table、FigureCaption、Title和 ListItem等。例如，Image有21个，Table有4个，说明hi_res模式不仅提取文本，还对版面结构（图片、表格、标题、页眉等）进行了检测和分割。
+使用ocr_only时，共解析出138个元素（8266个字符），整体元素数量明显减少，类型主要集中在UncategorizedText、Title 和 NarrativeText，不再区分图片、表格和图注等结构。这表明ocr_only更侧重对整页进行OCR识别，而不做复杂的版面分析。
+
+2）文本粒度与布局信息的差异
+在hi_res模式下，前几个元素中既包含单独的Image元素，也包含Header和较短的文本片段（大量UncategorizedText），文本被切得更细，能够较好地反映出页面上的布局结构。
+在ocr_only模式下，前几个元素多为长串的OCR文本，往往将同一页上的多个区域“揉”成一个较大的文本块，同时仍然存在较多乱码。这说明ocr_only 更像是对页面整体做一次纯OCR，缺乏精细的块级分段和版面标签。
+
+3）结论
+综合来看，hi_res模式适合需要保留版面结构信息的场景（例如保留图片、表格、标题层次等），代价是元素数量多、粒度细、预处理开销更大；ocr_only模式则更偏向简单粗暴的文本提取，结构信息较弱，但实现逻辑相对简单。在本PDF中，两种策略字符总量相近，但hi_res 提供了更多关于布局和元素类型的结构化信号，而ocr_only输出则更接近“纯OCR文本”。
+  
