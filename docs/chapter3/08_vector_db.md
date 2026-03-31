@@ -160,6 +160,7 @@ FAISS index has been saved to ./faiss_index_store
 
 
 ## 练习
+1. LlamaIndex默认会将数据存储为透明可读的JSON格式，运行03_llamaindex_vector.py文件，查看保存的json文件内容。
 
 json文件内容解析，llamaindex生成的第一个json文件是default__vector_store.json，这个文件主要的作用是用于保存LlamaIndex处理后的检索索引中间结果，核心包括文本块向量、文本块到原始文档的映射，以及节点元数据。它本身不负责生成回答，而是为 RAG 的“召回/检索”环节提供基础数据支持。其中embedding_dict：保存每个文本块对应的向量表示，也就是embedding。后续检索时，用户问题也会被转成向量，再和这些向量做相似度匹配。text_id_to_ref_doc_id：保存文本块ID到原始文档ID的映射关系，方便查到“这个向量属于哪篇文档”。metadata_dict：保存每个文本块的元信息，这里能看到 _node_type: "TextNode"，以及document_id、doc_id、ref_doc_id等字段，说明这些向量来自被切分后的文本节点。
 
@@ -169,4 +170,7 @@ json文件内容解析，llamaindex生成的第一个json文件是default__vecto
 
 第四个生成的文件是image__vector_store.json也是空文件，明确是存储图像向量的文件
 
-第五个生成的文件是index_store.json，该文件用于保存 LlamaIndex 向量索引的结构信息，记录索引 ID 及其包含的节点列表。它主要负责索引的组织与恢复，不直接存储文本内容或向量数据，而是与 docstore 和向量存储文件配合完成 RAG 检索流程。。
+第五个生成的文件是index_store.json，该文件用于保存 LlamaIndex 向量索引的结构信息，记录索引 ID 及其包含的节点列表。它主要负责索引的组织与恢复，不直接存储文本内容或向量数据，而是与 docstore 和向量存储文件配合完成 RAG 检索流程。
+
+2. 新建一个代码文件实现对LlamaIndex存储数据的加载和相似性搜索。
+   
