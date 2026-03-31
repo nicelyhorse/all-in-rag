@@ -129,4 +129,4 @@ print(f"图文结合1 vs 图文结合2: {sim_4}")
 图文结合1 vs 纯文本: tensor([[0.5509]])
 图文结合1 vs 图文结合2: tensor([[0.9058]])
 ```
-这个就是在完成条件之后的结果，BGE Visualized 模型会试图把图像理解成文本语义，但“blue whale”对图像是不匹配的，假设图像是Datawhale的 LOGO：Logo 是抽象鲸鱼图案（蓝色+简化+图形风格），文本 “datawhale开源组织logo” 语义上100%对齐，文本 “blue whale” 是真实动物，不是 logo→语义偏离
+这个就是在完成条件之后的结果，BGE Visualized 模型会试图把图像理解成文本语义，但“blue whale”对图像是不匹配的，假设图像是Datawhale的 LOGO：Logo 是抽象鲸鱼图案（蓝色+简化+图形风格），文本 “datawhale开源组织logo” 语义上100%对齐，文本 “blue whale” 是真实动物，不是抽象图形logo，也就是意味着语义偏离
