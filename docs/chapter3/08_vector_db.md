@@ -173,4 +173,20 @@ json文件内容解析，llamaindex生成的第一个json文件是default__vecto
 第五个生成的文件是index_store.json，该文件用于保存 LlamaIndex 向量索引的结构信息，记录索引 ID 及其包含的节点列表。它主要负责索引的组织与恢复，不直接存储文本内容或向量数据，而是与 docstore 和向量存储文件配合完成 RAG 检索流程。
 
 2. 新建一个代码文件实现对LlamaIndex存储数据的加载和相似性搜索。
-   
+   脚本文件详参新增的脚本03_llamaIndex_vector_loader.py，运行结果如下：
+    [Result 1]
+    Score: 0.6837823735997418
+    LlamaIndex是一个用于构建和查询私有或领域特定数据的框架。
+
+    [Result 2]
+    Score: 0.32171357976269044
+    它提供了数据连接、索引和查询接口等工具。
+
+    [Result 3]
+    Score: 0.24281450698216056
+    张三是法外狂徒
+   Result 1是和你的查询 “LlamaIndex 是什么” 最相关的一条。这句话直接在解释 LlamaIndex 的定义，所以得分最高，属于正确命中。
+
+   Result 2这条也相关，因为它是在补充说明 LlamaIndex 的功能。虽然没有直接回答“是什么”，但和主题一致，所以排在第二。
+
+   Result 3这条和你的查询几乎没有真正语义关系，但仍然被排进了Top 3因为doc中只存了三条
